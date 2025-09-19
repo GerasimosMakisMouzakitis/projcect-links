@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Links Manager</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Project Links Manager</h1>
+            <p>Organize your project links with drag and drop functionality</p>
+            <div class="version-info">
+                <span class="version">v0.0.2</span>
+                <span class="creator">Created by Gerasimos Makis Mouzakitis</span>
+            </div>
+        </header>
+
+        <section class="project-creation">
+            <h2>Create New Project</h2>
+            <div class="input-group">
+                <input type="text" id="projectNameInput" placeholder="Enter project name" maxlength="50">
+                <button id="createProjectBtn">Create Project</button>
+            </div>
+        </section>
+
+        <section class="drag-drop-area">
+            <div id="dropZone" class="drop-zone">
+                <div class="drop-zone-content">
+                    <h3>Drag and Drop Links Here</h3>
+                    <p>Select a project first, then drag links or URLs here to add them</p>
+                    <div class="drop-icon">📎</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="projects-section">
+            <div class="projects-header">
+                <h2>Your Projects</h2>
+                <button id="exportAllBtn" class="export-btn">Export All Projects</button>
+            </div>
+            <div id="projectsList" class="projects-list">
+                <!-- Projects will be dynamically inserted here -->
+            </div>
+        </section>
+
+        <section class="instructions">
+            <h3>How to use:</h3>
+            <ol>
+                <li>Create a new project by entering a name and clicking "Create Project"</li>
+                <li>Select a project by clicking on it (it will be highlighted)</li>
+                <li><strong>To add links:</strong> Drag URLs from your browser's address bar, bookmarks, or links from web pages directly into the drop zone</li>
+                <li>Alternatively, click the drop zone to add links manually</li>
+                <li>Use the export button to download your project links</li>
+            </ol>
+            <div class="tips">
+                <h4>💡 Tips for drag and drop:</h4>
+                <ul>
+                    <li>Drag from the browser's address bar (URL bar) for best results</li>
+                    <li>Drag bookmarks directly from your bookmarks bar</li>
+                    <li>Drag links from web pages (right-click and drag)</li>
+                    <li>Make sure to select a project first!</li>
+                </ul>
+            </div>
+        </section>
+
+        <footer class="app-footer">
+            <div class="footer-content">
+                <div class="app-info">
+                    <h4>Project Links Manager v0.0.2</h4>
+                    <p>Created by Gerasimos Makis Mouzakitis</p>
+                </div>
+                <div class="date-info">
+                    <p>Created: <span id="createdDate">2025-09-19T08:52:40.000Z</span></p>
+                    <p>Updated: <span id="updatedDate">2025-09-19T08:58:32.000Z</span></p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Modal for manual link input -->
+    <div id="linkInputModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Add Link Manually</h3>
+            <div class="input-group">
+                <input type="url" id="linkUrlInput" placeholder="https://example.com">
+                <input type="text" id="linkTitleInput" placeholder="Link title (optional)">
+                <button id="addLinkBtn">Add Link</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
