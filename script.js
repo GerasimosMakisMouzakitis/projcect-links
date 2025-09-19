@@ -1,9 +1,9 @@
 class ProjectLinksManager {
     constructor() {
-        this.version = '0.0.2';
+        this.version = '0.0.4';
         this.creator = 'Gerasimos Makis Mouzakitis';
         this.createdDate = '2025-09-19T08:52:40.000Z';
-        this.updatedDate = '2025-09-19T08:58:32.000Z';
+        this.updatedDate = '2025-09-19T09:34:35.000Z';
         
         this.projects = this.loadProjects();
         this.selectedProjectId = null;
@@ -34,55 +34,60 @@ class ProjectLinksManager {
         const dropZone = document.getElementById('dropZone');
 
         // Prevent default drag behaviors on the entire document
-        document.addEventListener('dragenter', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            document.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+            }, false);
         });
 
-        document.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-        });
-
-        document.addEventListener('dragleave', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-        });
-
-        document.addEventListener('drop', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-        });
-
-        // Handle drag and drop events specifically for the drop zone
+        // Handle drag enter for the drop zone
         dropZone.addEventListener('dragenter', (e) => {
             e.preventDefault();
             e.stopPropagation();
+            console.log('Drag enter detected');
             if (this.selectedProjectId) {
                 dropZone.classList.add('drag-over');
+                console.log('Added drag-over class');
+            } else {
+                this.showTempMessage('Please select a project first!');
             }
         });
 
+        // Handle drag over for the drop zone
         dropZone.addEventListener('dragover', (e) => {
             e.preventDefault();
             e.stopPropagation();
             if (this.selectedProjectId) {
                 dropZone.classList.add('drag-over');
+                // Change cursor to indicate drop is allowed
+                e.dataTransfer.dropEffect = 'copy';
+            } else {
+                e.dataTransfer.dropEffect = 'none';
             }
         });
 
+        // Handle drag leave for the drop zone
         dropZone.addEventListener('dragleave', (e) => {
             e.preventDefault();
             e.stopPropagation();
+            console.log('Drag leave detected');
             // Only remove drag-over if we're actually leaving the drop zone
-            if (!dropZone.contains(e.relatedTarget)) {
+            const rect = dropZone.getBoundingClientRect();
+            const x = e.clientX;
+            const y = e.clientY;
+            
+            if (x < rect.left || x >= rect.right || y < rect.top || y >= rect.bottom) {
                 dropZone.classList.remove('drag-over');
+                console.log('Removed drag-over class');
             }
         });
 
+        // Handle drop for the drop zone
         dropZone.addEventListener('drop', (e) => {
             e.preventDefault();
             e.stopPropagation();
+            console.log('Drop detected');
             dropZone.classList.remove('drag-over');
             
             if (!this.selectedProjectId) {
@@ -96,30 +101,22 @@ class ProjectLinksManager {
             // First try to get URL from dataTransfer
             const urlFromDataTransfer = e.dataTransfer.getData('text/uri-list') || 
                                        e.dataTransfer.getData('text/plain') ||
-                                       e.dataTransfer.getData('URL');
+                                       e.dataTransfer.getData('URL') ||
+                                       e.dataTransfer.getData('text/x-moz-url');
             
             if (urlFromDataTransfer) {
                 // Handle multiple URLs (take the first one)
-                url = urlFromDataTransfer.split('\n')[0].trim();
+                url = urlFromDataTransfer.split('\n')[0].split('\t')[0].trim();
             }
             
-            // If we have files dropped, try to extract URL from HTML files
-            if (!url && e.dataTransfer.files.length > 0) {
-                const file = e.dataTransfer.files[0];
-                if (file.type === 'text/html' || file.name.endsWith('.html')) {
-                    // For HTML files, we'd need to read the content
-                    alert('HTML file dropped. Please drag the URL directly from your browser address bar or bookmark.');
-                    return;
-                }
-            }
+            console.log('Dropped URL:', url);
 
             if (url && this.isValidUrl(url)) {
                 this.addLinkToProject(this.selectedProjectId, url);
-                
-                // Show success feedback
                 this.showSuccessMessage(`Link added successfully!`);
             } else {
                 alert('Invalid URL dropped. Please drag a valid URL from your browser address bar or a bookmark.');
+                console.log('Invalid URL or no URL found in drop data');
             }
         });
 
@@ -547,6 +544,25 @@ class ProjectLinksManager {
         setTimeout(() => {
             successDiv.style.display = 'none';
         }, 3000);
+    }
+
+    showTempMessage(message) {
+        // Create or update temp message element
+        let tempDiv = document.getElementById('tempMessage');
+        if (!tempDiv) {
+            tempDiv = document.createElement('div');
+            tempDiv.id = 'tempMessage';
+            tempDiv.className = 'temp-message';
+            document.body.appendChild(tempDiv);
+        }
+        
+        tempDiv.textContent = message;
+        tempDiv.style.display = 'block';
+        
+        // Auto-hide after 2 seconds
+        setTimeout(() => {
+            tempDiv.style.display = 'none';
+        }, 2000);
     }
 
     getAppMetadata() {

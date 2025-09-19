@@ -1,8 +1,8 @@
-# Project Links Manager v0.0.2
+# Project Links Manager v0.0.4
 
 A modern web application for organizing and managing project links with drag & drop functionality.
 
-![Project Links Manager](https://img.shields.io/badge/version-0.0.2-blue.svg)
+![Project Links Manager](https://img.shields.io/badge/version-0.0.4-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 
 ## ✨ Features
@@ -131,6 +131,23 @@ The app is built with vanilla web technologies, so you can edit the files direct
 - `script.js` - Functionality and interactions
 
 ## 📝 Changelog
+
+### v0.0.4 (2025-09-19)
+- Fixed long URL overflow issues in project cards
+- Improved text wrapping for URLs with word-break and overflow-wrap
+- Enhanced link item layout with better flex alignment
+- Added consistent spacing and positioning for delete buttons
+- Improved project card overflow handling
+- Enhanced responsive design for long content
+
+### v0.0.3 (2025-09-19)
+- Enhanced drag & drop visual feedback with pulsing animations
+- Added stronger highlighting when dragging links over drop zone
+- Improved drag event detection and boundary checking
+- Added console debugging for better troubleshooting
+- Enhanced URL detection with multiple data transfer formats
+- Added temporary warning messages for better user guidance
+- Fixed drag leave detection with precise boundary checking
 
 ### v0.0.2 (2025-09-19)
 - Fixed drag & drop issues preventing browser navigation

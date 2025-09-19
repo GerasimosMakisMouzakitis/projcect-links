@@ -130,9 +130,31 @@ button:active {
 }
 
 .drop-zone.drag-over {
-    border-color: #38b2ac;
-    background: #e6fffa;
+    border-color: #38b2ac !important;
+    background: #e6fffa !important;
     transform: scale(1.02);
+    box-shadow: 0 0 20px rgba(56, 178, 172, 0.3);
+    border-style: solid !important;
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 20px rgba(56, 178, 172, 0.3); }
+    50% { box-shadow: 0 0 30px rgba(56, 178, 172, 0.5); }
+    100% { box-shadow: 0 0 20px rgba(56, 178, 172, 0.3); }
+}
+
+.drop-zone.drag-over .drop-zone-content h3 {
+    color: #2c7a7b !important;
+}
+
+.drop-zone.drag-over .drop-zone-content p {
+    color: #2c7a7b !important;
+}
+
+.drop-zone.drag-over .drop-icon {
+    transform: scale(1.2);
+    transition: transform 0.2s ease;
 }
 
 .drop-zone.disabled {
@@ -189,6 +211,9 @@ button:active {
     background: #f7fafc;
     transition: all 0.3s ease;
     cursor: pointer;
+    overflow: hidden;
+    word-wrap: break-word;
+    min-height: 200px;
 }
 
 .project-card:hover {
@@ -257,13 +282,15 @@ button:active {
 .link-item {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     padding: 8px 12px;
     margin-bottom: 8px;
     background: white;
     border-radius: 6px;
     border-left: 4px solid #667eea;
     transition: all 0.2s ease;
+    min-height: 40px;
+    gap: 10px;
 }
 
 .link-item:hover {
@@ -271,10 +298,21 @@ button:active {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+.link-info {
+    flex: 1;
+    min-width: 0;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+}
+
 .link-info a {
     color: #667eea;
     text-decoration: none;
     font-weight: 500;
+    word-break: break-all;
+    overflow-wrap: break-word;
+    display: block;
+    max-width: 100%;
 }
 
 .link-info a:hover {
@@ -285,6 +323,9 @@ button:active {
     font-size: 14px;
     color: #718096;
     margin-top: 2px;
+    word-break: break-all;
+    overflow-wrap: break-word;
+    max-width: 100%;
 }
 
 .delete-link-btn {
@@ -294,6 +335,9 @@ button:active {
     color: #c53030;
     border: none;
     border-radius: 4px;
+    flex-shrink: 0;
+    align-self: flex-start;
+    margin-top: 2px;
 }
 
 .delete-link-btn:hover {
@@ -385,6 +429,21 @@ button:active {
     top: 20px;
     right: 20px;
     background: #38a169;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    display: none;
+    animation: slideInFromRight 0.3s ease-out;
+    font-weight: 500;
+}
+
+.temp-message {
+    position: fixed;
+    top: 70px;
+    right: 20px;
+    background: #f56565;
     color: white;
     padding: 12px 20px;
     border-radius: 8px;
