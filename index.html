@@ -12,7 +12,7 @@
             <h1>Project Links Manager</h1>
             <p>Organize your project links with drag and drop functionality</p>
             <div class="version-info">
-                <span class="version">v0.0.4</span>
+                <span class="version">v0.0.5</span>
                 <span class="creator">Created by Gerasimos Makis Mouzakitis</span>
             </div>
         </header>
@@ -68,12 +68,12 @@
         <footer class="app-footer">
             <div class="footer-content">
                 <div class="app-info">
-                    <h4>Project Links Manager v0.0.4</h4>
+                    <h4>Project Links Manager v0.0.5</h4>
                     <p>Created by Gerasimos Makis Mouzakitis</p>
                 </div>
                 <div class="date-info">
                     <p>Created: <span id="createdDate">2025-09-19T08:52:40.000Z</span></p>
-                    <p>Updated: <span id="updatedDate">2025-09-19T09:34:35.000Z</span></p>
+                    <p>Updated: <span id="updatedDate">2025-09-19T10:11:19.000Z</span></p>
                 </div>
             </div>
         </footer>
@@ -88,6 +88,19 @@
                 <input type="url" id="linkUrlInput" placeholder="https://example.com">
                 <input type="text" id="linkTitleInput" placeholder="Link title (optional)">
                 <button id="addLinkBtn">Add Link</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for editing links -->
+    <div id="editLinkModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Edit Link</h3>
+            <div class="input-group">
+                <input type="url" id="editLinkUrlInput" placeholder="https://example.com">
+                <input type="text" id="editLinkTitleInput" placeholder="Link title (optional)">
+                <button id="saveEditBtn">Save Changes</button>
             </div>
         </div>
     </div>

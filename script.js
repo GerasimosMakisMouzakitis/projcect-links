@@ -1,9 +1,9 @@
 class ProjectLinksManager {
     constructor() {
-        this.version = '0.0.4';
+        this.version = '0.0.5';
         this.creator = 'Gerasimos Makis Mouzakitis';
         this.createdDate = '2025-09-19T08:52:40.000Z';
-        this.updatedDate = '2025-09-19T09:34:35.000Z';
+        this.updatedDate = '2025-09-19T10:11:19.000Z';
         
         this.projects = this.loadProjects();
         this.selectedProjectId = null;
@@ -131,6 +131,7 @@ class ProjectLinksManager {
     }
 
     initializeModal() {
+        // Add link modal
         const modal = document.getElementById('linkInputModal');
         const closeBtn = modal.querySelector('.close');
         const addBtn = document.getElementById('addLinkBtn');
@@ -149,6 +150,27 @@ class ProjectLinksManager {
         
         document.getElementById('linkUrlInput').addEventListener('keypress', (e) => {
             if (e.key === 'Enter') this.addLinkFromModal();
+        });
+
+        // Edit link modal
+        const editModal = document.getElementById('editLinkModal');
+        const editCloseBtn = editModal.querySelector('.close');
+        const saveBtn = document.getElementById('saveEditBtn');
+
+        editCloseBtn.addEventListener('click', () => {
+            editModal.style.display = 'none';
+        });
+
+        window.addEventListener('click', (e) => {
+            if (e.target === editModal) {
+                editModal.style.display = 'none';
+            }
+        });
+
+        saveBtn.addEventListener('click', () => this.saveEditedLink());
+        
+        document.getElementById('editLinkUrlInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') this.saveEditedLink();
         });
     }
 
@@ -298,6 +320,81 @@ class ProjectLinksManager {
         }
     }
 
+    editLink(projectId, linkId) {
+        const project = this.projects.find(p => p.id === projectId);
+        if (!project) return;
+        
+        const link = project.links.find(l => l.id === linkId);
+        if (!link) return;
+
+        // Show edit modal with current values
+        this.showEditLinkModal(projectId, linkId, link.url, link.title);
+    }
+
+    showEditLinkModal(projectId, linkId, currentUrl, currentTitle) {
+        const modal = document.getElementById('editLinkModal');
+        const urlInput = document.getElementById('editLinkUrlInput');
+        const titleInput = document.getElementById('editLinkTitleInput');
+        
+        // Set current values
+        urlInput.value = currentUrl;
+        titleInput.value = currentTitle;
+        
+        // Store the IDs for the save operation
+        modal.dataset.projectId = projectId;
+        modal.dataset.linkId = linkId;
+        
+        modal.style.display = 'block';
+        urlInput.focus();
+        urlInput.select();
+    }
+
+    saveEditedLink() {
+        const modal = document.getElementById('editLinkModal');
+        const urlInput = document.getElementById('editLinkUrlInput');
+        const titleInput = document.getElementById('editLinkTitleInput');
+        
+        const projectId = modal.dataset.projectId;
+        const linkId = modal.dataset.linkId;
+        const newUrl = urlInput.value.trim();
+        const newTitle = titleInput.value.trim();
+
+        if (!newUrl) {
+            alert('Please enter a URL');
+            return;
+        }
+
+        if (!this.isValidUrl(newUrl)) {
+            alert('Please enter a valid URL (including http:// or https://)');
+            return;
+        }
+
+        const project = this.projects.find(p => p.id === projectId);
+        if (!project) return;
+
+        const link = project.links.find(l => l.id === linkId);
+        if (!link) return;
+
+        // Check for duplicate URLs (excluding the current link)
+        const duplicateLink = project.links.find(l => l.id !== linkId && l.url === newUrl);
+        if (duplicateLink) {
+            alert('This URL already exists in the project');
+            return;
+        }
+
+        // Update the link
+        link.url = newUrl;
+        link.title = newTitle || this.extractTitleFromUrl(newUrl);
+        link.updatedAt = new Date().toISOString();
+
+        this.saveProjects();
+        this.renderProjects();
+        
+        // Close modal and show success
+        modal.style.display = 'none';
+        this.showSuccessMessage('Link updated successfully!');
+    }
+
     exportProject(projectId) {
         const project = this.projects.find(p => p.id === projectId);
         if (!project) return;
@@ -381,9 +478,14 @@ class ProjectLinksManager {
                                     </a>
                                     <div class="link-title">${this.escapeHtml(link.url)}</div>
                                 </div>
-                                <button class="delete-link-btn" onclick="app.deleteLink('${project.id}', '${link.id}')">
-                                    ×
-                                </button>
+                                <div class="link-actions">
+                                    <button class="edit-link-btn" onclick="app.editLink('${project.id}', '${link.id}')" title="Edit link">
+                                        ✏️
+                                    </button>
+                                    <button class="delete-link-btn" onclick="app.deleteLink('${project.id}', '${link.id}')" title="Delete link">
+                                        ×
+                                    </button>
+                                </div>
                             </li>
                         `).join('')}
                     </ul>

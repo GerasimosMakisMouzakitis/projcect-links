@@ -328,6 +328,34 @@ button:active {
     max-width: 100%;
 }
 
+.link-actions {
+    display: flex;
+    gap: 5px;
+    flex-shrink: 0;
+    align-self: flex-start;
+    margin-top: 2px;
+}
+
+.edit-link-btn {
+    padding: 4px 8px;
+    font-size: 12px;
+    background: #e6fffa;
+    color: #319795;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    min-width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.edit-link-btn:hover {
+    background: #b2f5ea;
+}
+
 .delete-link-btn {
     padding: 4px 8px;
     font-size: 12px;
@@ -335,9 +363,13 @@ button:active {
     color: #c53030;
     border: none;
     border-radius: 4px;
-    flex-shrink: 0;
-    align-self: flex-start;
-    margin-top: 2px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    min-width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .delete-link-btn:hover {
